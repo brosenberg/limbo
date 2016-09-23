@@ -3,10 +3,10 @@
 import random
 import re
 
-USAGE = """Usage: !roll [diceroll]
+USAGE = """```Usage: !roll [diceroll]
 ex: !roll 3d6
     !roll 2d4-2
-    !roll 10d4+10"""
+    !roll 10d4+10```"""
 
 def roll(input_dice):
     r = re.match('^([0-9]+)\s*d\s*([0-9]+)\s*([-+\/*x])?\s*([0-9]+)?\s*$', input_dice)
