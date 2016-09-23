@@ -135,12 +135,18 @@ def handle_message(event, server):
 
     return "\n".join(run_hook(server.hooks, "message", event, server))
 
+def handle_text(event, server):
+    return "\n".join(run_hook(server.hooks, "text", event, server))
+
 event_handlers = {
     "message": handle_message,
+    "text": handle_text,
 }
 
 def handle_event(event, server):
     handler = event_handlers.get(event.get("type"))
+    if not handler and event.get("text"):
+        handler = event_handlers.get("text")
     if handler:
         return handler(event, server)
 

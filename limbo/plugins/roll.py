@@ -1,7 +1,12 @@
-"""!roll returns the result of a given dice roll"""
+"""!roll [diceroll] returns the result of a given dice roll"""
 
 import random
 import re
+
+USAGE = """Usage: !roll [diceroll]
+ex: !roll 3d6
+    !roll 2d4-2
+    !roll 10d4+10"""
 
 def roll(input_dice):
     r = re.match('^([0-9]+)\s*d\s*([0-9]+)\s*([-+\/*x])?\s*([0-9]+)?\s*$', input_dice)
@@ -11,16 +16,16 @@ def roll(input_dice):
         dice     = int(r.group(1))
         sides    = int(r.group(2))
     except AttributeError:
-        return "Unknown dice input: %s" % (input_dice,)
+        return "Unknown dice input: %s\n%s" % (input_dice, USAGE)
     try:
         mod_type = r.group(3)
         mod      = int(r.group(4))
     except AttributeError:
-        mod_type = "+"
-        mod = 0
+        mod_type = ""
+        mod = ""
     except TypeError:
-        mod_type = "+"
-        mod = 0
+        mod_type = ""
+        mod = ""
     old_dice = dice
 
     while dice > 0:
@@ -36,7 +41,7 @@ def roll(input_dice):
     if mod_type == '/':
         result /= mod
 
-    result = "%dd%d%s%d = (%s)%s%d = %d" % (old_dice, sides, mod_type, mod, '+'.join(str(x) for x in rolls), mod_type, mod, result)
+    result = "%dd%d%s%s: (%s)%s%s = %d" % (old_dice, sides, mod_type, mod, '+'.join(str(x) for x in rolls), mod_type, mod, result)
 
     return result
 
